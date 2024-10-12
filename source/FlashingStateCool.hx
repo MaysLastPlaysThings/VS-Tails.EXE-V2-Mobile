@@ -46,11 +46,21 @@ class FlashingStateCool extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		#if mobile
+		for (touch in FlxG.touches.list) {
+		 if (touch.justPressed && !leftState)
+		 {
+			 leftState = true;
+			 FlxG.switchState(new TitleState());
+	   }
+		}
+   #else
 		if (controls.ACCEPT)
 		{
 			leftState = true;
 			FlxG.switchState(new TitleState());
 		}
+  #end
 		super.update(elapsed);
 	}
 }
