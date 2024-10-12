@@ -70,9 +70,6 @@ class ControlsSubState extends MusicBeatSubstate
 	public function new()
 	{
 		super();
-		#if mobile
-		addVirtualPad(LEFT_FULL, A_B);
-		#end
 		/* will hault game
 			if(ClientPrefs.areYouTeles) {
 				optionShit = [
@@ -153,6 +150,10 @@ class ControlsSubState extends MusicBeatSubstate
 			}
 		}
 		changeSelection();
+		#if mobile
+		addVirtualPad(LEFT_FULL, A_B);
+		addVirtualPadCamera(false);
+		#end
 	}
 
 	var leaving:Bool = false;
@@ -178,7 +179,7 @@ class ControlsSubState extends MusicBeatSubstate
 			if (controls.BACK)
 			{
 				ClientPrefs.reloadControls();
-				close();
+				FlxG.resetState();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 			}
 
