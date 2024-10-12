@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+
 using StringTools;
 
 class SongUnlock
@@ -54,19 +55,36 @@ class SongUnlock
 	{
 		return songUnlocks.get(optionToGet);
 	}
-	public static function getStoryStatus(debugOr:Bool = false) {
+
+	public static function getStoryStatus(debugOr:Bool = false)
+	{
 		var count:Int = 0;
 
-		for (song in ['Chasing', 'Darkness', 'Rivals', 'Reverie', 'Sidekick', 'Starshine', 'Coughing', 'Hatch', 'Levitating', 'Soic', 'Nightmare']) {
-			if (getUnlock(song))  count++;
+		for (song in [
+			'Chasing',
+			'Darkness',
+			'Rivals',
+			'Reverie',
+			'Sidekick',
+			'Starshine',
+			'Coughing',
+			'Hatch',
+			'Levitating',
+			'Soic',
+			'Nightmare'
+		])
+		{
+			if (getUnlock(song))
+				count++;
 		}
 
 		return count;
 	}
+
 	public static function unlockSong(unlockThis:String)
 	{
 		songUnlocks.set(unlockThis, true);
 		trace('unlocked $unlockThis');
-		//saveSettings();
+		// saveSettings();
 	}
 }

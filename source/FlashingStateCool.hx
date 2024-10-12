@@ -1,6 +1,5 @@
 package;
 
-
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -22,6 +21,7 @@ using StringTools;
 class FlashingStateCool extends MusicBeatState
 {
 	public static var leftState = false;
+
 	override function create()
 	{
 		#if desktop
@@ -41,26 +41,26 @@ class FlashingStateCool extends MusicBeatState
 		add(bg);
 
 		super.create();
-
 	}
 
 	override function update(elapsed:Float)
 	{
 		#if mobile
-		for (touch in FlxG.touches.list) {
-		 if (touch.justPressed && !leftState)
-		 {
-			 leftState = true;
-			 FlxG.switchState(new TitleState());
-	   }
+		for (touch in FlxG.touches.list)
+		{
+			if (touch.justPressed && !leftState) // yes touch :)
+			{
+				leftState = true;
+				FlxG.switchState(new TitleState());
+			}
 		}
-   #else
+		#else
 		if (controls.ACCEPT)
 		{
 			leftState = true;
 			FlxG.switchState(new TitleState());
 		}
-  #end
+		#end
 		super.update(elapsed);
 	}
 }

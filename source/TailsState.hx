@@ -1,6 +1,5 @@
 package;
 
-
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -26,15 +25,19 @@ class TailsState extends MusicBeatState
 	var psych:FlxSprite;
 	var initialized:Bool = false;
 	var startButton:FlxSprite;
-	
+
 	override function create()
 	{
+		#if mobile
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
+
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Title", null);
 		#end
 
-        //FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		// FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
@@ -52,18 +55,18 @@ class TailsState extends MusicBeatState
 		add(psych);
 
 		var bg:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('menustuff/titleboot/bg', 'sadfox'));
-        bg.setGraphicSize(Std.int(bg.width * 3.2));
-        bg.updateHitbox();
+		bg.setGraphicSize(Std.int(bg.width * 3.2));
+		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = false;
 		bg.visible = false;
 		add(bg);
 
-        var title:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('menustuff/titleboot/tails', 'sadfox'));
-        title.setGraphicSize(Std.int(title.width * 3.2));
-        title.updateHitbox();
+		var title:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('menustuff/titleboot/tails', 'sadfox'));
+		title.setGraphicSize(Std.int(title.width * 3.2));
+		title.updateHitbox();
 		title.screenCenter();
-        title.y += 20;
+		title.y += 20;
 		title.antialiasing = false;
 		title.visible = false;
 		add(title);
@@ -77,26 +80,29 @@ class TailsState extends MusicBeatState
 		new FlxTimer().start(0.5, function(tmr:FlxTimer)
 		{
 			FlxG.sound.play(Paths.sound('sega'), 1.5);
-			FlxTween.tween(sega, {alpha: 1}, 0.8, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) {
-				new FlxTimer().start(1.3, function(tmr:FlxTimer)
+			FlxTween.tween(sega, {alpha: 1}, 0.8, {
+				ease: FlxEase.sineInOut,
+				onComplete: function(twn:FlxTween)
+				{
+					new FlxTimer().start(1.3, function(tmr:FlxTimer)
 					{
 						FlxTween.tween(sega, {alpha: 0}, 0.8, {ease: FlxEase.sineInOut});
 						new FlxTimer().start(1, function(tmr:FlxTimer)
 						{
 							FlxTween.tween(psych, {alpha: 1}, 0.8, {ease: FlxEase.sineInOut});
 							FlxG.sound.play(Paths.sound('psych'), 1.5);
-	
+
 							new FlxTimer().start(1.7, function(tmr:FlxTimer)
 							{
 								FlxTween.tween(psych, {alpha: 0}, 0.8, {ease: FlxEase.sineInOut});
-	
+
 								new FlxTimer().start(1, function(tmr:FlxTimer)
 								{
 									FlxG.camera.flash(FlxColor.WHITE, 5);
 									title.visible = true;
 									bg.visible = true;
 									///startButton.visible = true; -- lol
-	
+
 									initialized = true;
 									FlxG.sound.playMusic(Paths.music('freakyMenu'));
 									FlxG.sound.music.fadeIn(4, 0, 0.7);
@@ -104,18 +110,29 @@ class TailsState extends MusicBeatState
 							});
 						});
 					});
-				}});
+				}
+			});
 		});
 
-        FlxTween.tween(title, {y: title.y - 40}, 3, {type: FlxTweenType.PINGPONG, ease: FlxEase.sineInOut});
+		FlxTween.tween(title, {y: title.y - 40}, 3, {type: FlxTweenType.PINGPONG, ease: FlxEase.sineInOut});
 
 		super.create();
-
 	}
+
 	var transitioning:Bool = false;
 
 	override function update(elapsed:Float)
 	{
+		#if mobile
+		for (touch in FlxG.touches.list)
+		{
+			if (touch.justPressed)
+			{
+				pressedEnter = true;
+			}
+		}
+		#end
+
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
 		if (pressedEnter && initialized && !transitioning)

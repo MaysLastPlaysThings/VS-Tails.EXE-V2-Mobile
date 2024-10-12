@@ -27,12 +27,12 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.6.3'; //This is also used for Discord RPC
+	public static var psychEngineVersion:String = '0.6.3'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
-	
+
 	public var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'extras', 'options'];
 
 	public var forceCenter:Bool = true;
@@ -48,6 +48,9 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+
 		#if MODS_ALLOWED
 		Paths.pushGlobalMods();
 		#end
@@ -75,12 +78,13 @@ class MainMenuState extends MusicBeatState
 		#else
 		backdrop = new FlxBackdrop(Paths.image("menustuff/grid", 'sadfox'), 8, 8, true, true, 1, 1);
 		#end
-        backdrop.velocity.set(FlxG.random.bool(50) ? 90 : -90, FlxG.random.bool(50) ? 90 : -90);
-        backdrop.screenCenter();
-        backdrop.alpha = 0.4;
-        add(backdrop);
-		
-		var maxArts:Int = switch (SongUnlock.getUnlock('Darkness')) {
+		backdrop.velocity.set(FlxG.random.bool(50) ? 90 : -90, FlxG.random.bool(50) ? 90 : -90);
+		backdrop.screenCenter();
+		backdrop.alpha = 0.4;
+		add(backdrop);
+
+		var maxArts:Int = switch (SongUnlock.getUnlock('Darkness'))
+		{
 			case false: 1;
 			case true: 3;
 		}
@@ -131,45 +135,49 @@ class MainMenuState extends MusicBeatState
 		changeItem();
 
 		/*
-		#if ACHIEVEMENTS_ALLOWED
-		Achievements.loadAchievements();
-		var leDate = Date.now();
-		if (leDate.getDay() == 5 && leDate.getHours() >= 18) {
-			var achieveID:Int = Achievements.getAchievementIndex('friday_night_play');
-			if(!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) { //It's a friday night. WEEEEEEEEEEEEEEEEEE
-				Achievements.achievementsMap.set(Achievements.achievementsStuff[achieveID][2], true);
-				giveAchievement();
-				ClientPrefs.saveSettings();
+			#if ACHIEVEMENTS_ALLOWED
+			Achievements.loadAchievements();
+			var leDate = Date.now();
+			if (leDate.getDay() == 5 && leDate.getHours() >= 18) {
+				var achieveID:Int = Achievements.getAchievementIndex('friday_night_play');
+				if(!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) { //It's a friday night. WEEEEEEEEEEEEEEEEEE
+					Achievements.achievementsMap.set(Achievements.achievementsStuff[achieveID][2], true);
+					giveAchievement();
+					ClientPrefs.saveSettings();
+				}
 			}
-		}
+			#end
+		 */
+
+		#if mobile
+		addVirtualPad(LEFT_RIGHT, A_B);
 		#end
-		*/
 
 		super.create();
 	}
 
 	/*
-	#if ACHIEVEMENTS_ALLOWED
-	// Unlocks "Freaky on a Friday Night" achievement
-	function giveAchievement() {
-		add(new AchievementObject('friday_night_play', camAchievement));
-		FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
-		trace('Giving achievement "friday_night_play"');
-	}
-	#end
-	*/
-
+		#if ACHIEVEMENTS_ALLOWED
+		// Unlocks "Freaky on a Friday Night" achievement
+		function giveAchievement() {
+			add(new AchievementObject('friday_night_play', camAchievement));
+			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
+			trace('Giving achievement "friday_night_play"');
+		}
+		#end
+	 */
 	var selectedSomethin:Bool = false;
 	var lerpVal:Float = 0.2;
 	var curWeek:WeekData;
-    var songArray:Array<String> = [];
+	var songArray:Array<String> = [];
 
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-			if(FreeplayState.vocals != null) FreeplayState.vocals.volume += 0.5 * elapsed;
+			if (FreeplayState.vocals != null)
+				FreeplayState.vocals.volume += 0.5 * elapsed;
 		}
 
 		if (!selectedSomethin)
@@ -179,7 +187,6 @@ class MainMenuState extends MusicBeatState
 				changeItem(-1);
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
-
 
 			if (controls.UI_RIGHT_P)
 			{
@@ -194,7 +201,7 @@ class MainMenuState extends MusicBeatState
 				MusicBeatState.switchState(new TitleState());
 			}
 
-			if(controls.UI_LEFT)
+			if (controls.UI_LEFT)
 			{
 				leftArrow.color = FlxColor.YELLOW;
 				leftArrow.alpha = 0.95;
@@ -206,7 +213,7 @@ class MainMenuState extends MusicBeatState
 				leftArrow.alpha = 0.95;
 				leftArrow.setGraphicSize(Std.int(leftArrow.width * 1));
 			}
-			if(controls.UI_RIGHT)
+			if (controls.UI_RIGHT)
 			{
 				rightArrow.color = FlxColor.YELLOW;
 				rightArrow.alpha = 0.95;
@@ -221,76 +228,75 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
-
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
 				/*
-				FlxTween.tween(FlxG.camera, {y: -900}, 0.9, {
-					ease: FlxEase.quadInOut
-				});
-				*/
+					FlxTween.tween(FlxG.camera, {y: -900}, 0.9, {
+						ease: FlxEase.quadInOut
+					});
+				 */
 				if (optionShit[curSelected] == 'ost')
 					CoolUtil.browserLoad('https://distrokid.com/hyperfollow/teles1/vs-tailsexe-volume-1');
 				else if (optionShit[curSelected] == 'discord')
 					CoolUtil.browserLoad('https://discord.gg/a7UjAsBFFT');
-				else {
+				else
+				{
 					selectedSomethin = true;
 					menuItems.forEach(function(spr:FlxSprite)
 					{
-
-							if (curSelected != spr.ID)
-							{
-								FlxTween.tween(spr, {alpha: 0}, 0.4, {
-									ease: FlxEase.quadOut,
-									onComplete: function(twn:FlxTween)
-									{
-										spr.kill();
-									}
-								});
-							}
-							else
-							{
-								FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+						if (curSelected != spr.ID)
+						{
+							FlxTween.tween(spr, {alpha: 0}, 0.4, {
+								ease: FlxEase.quadOut,
+								onComplete: function(twn:FlxTween)
 								{
-									var daChoice:String = optionShit[curSelected];
+									spr.kill();
+								}
+							});
+						}
+						else
+						{
+							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+							{
+								var daChoice:String = optionShit[curSelected];
 
-									switch (daChoice)
-									{
-										case 'extras':
-											MusicBeatState.switchState(new ExtrasMenu());
-										case 'story mode':
-											PlayState.storyWeek = 0;
-											var curWeekInt = PlayState.storyWeek;
-					
-											curWeek = WeekData.weeksLoaded.get(WeekData.weeksList[curWeekInt]);
-											trace(curWeekInt);
-											songArray = ['Chasing', 'Darkness', 'Rivals', 'Reverie', 'Sidekick'];
-											
-											PlayState.storyPlaylist = songArray;
-											PlayState.isStoryMode = true;
-							
-											PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase(), PlayState.storyPlaylist[0].toLowerCase());
-											PlayState.campaignScore = 0;
-											PlayState.campaignMisses = 0;
-											LoadingState.loadAndSwitchState(new PlayState(), true);
-											FreeplayState.destroyFreeplayVocals();
-										case 'freeplay':
-											MusicBeatState.switchState(new FreeplayState());
-										#if MODS_ALLOWED
-										case 'mods':
-											MusicBeatState.switchState(new ModsMenuState());
-										#end
-										case 'awards':
-											MusicBeatState.switchState(new AchievementsMenuState());
-										case 'credits':
-											MusicBeatState.switchState(new CreditsState());
-										case 'options':
-											LoadingState.loadAndSwitchState(new options.OptionsState());
-									}
-								});
-							} 
-				});
-			}
+								switch (daChoice)
+								{
+									case 'extras':
+										MusicBeatState.switchState(new ExtrasMenu());
+									case 'story mode':
+										PlayState.storyWeek = 0;
+										var curWeekInt = PlayState.storyWeek;
+
+										curWeek = WeekData.weeksLoaded.get(WeekData.weeksList[curWeekInt]);
+										trace(curWeekInt);
+										songArray = ['Chasing', 'Darkness', 'Rivals', 'Reverie', 'Sidekick'];
+
+										PlayState.storyPlaylist = songArray;
+										PlayState.isStoryMode = true;
+
+										PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase(), PlayState.storyPlaylist[0].toLowerCase());
+										PlayState.campaignScore = 0;
+										PlayState.campaignMisses = 0;
+										LoadingState.loadAndSwitchState(new PlayState(), true);
+										FreeplayState.destroyFreeplayVocals();
+									case 'freeplay':
+										MusicBeatState.switchState(new FreeplayState());
+									#if MODS_ALLOWED
+									case 'mods':
+										MusicBeatState.switchState(new ModsMenuState());
+									#end
+									case 'awards':
+										MusicBeatState.switchState(new AchievementsMenuState());
+									case 'credits':
+										MusicBeatState.switchState(new CreditsState());
+									case 'options':
+										LoadingState.loadAndSwitchState(new options.OptionsState());
+								}
+							});
+						}
+					});
+				}
 			}
 			#if desktop
 			else if (FlxG.keys.justPressed.SEVEN && (ClientPrefs.areYouTeles || SongUnlock.getStoryStatus() <= 11))
@@ -305,7 +311,7 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.forEach(function(item:FlxSprite)
 		{
-			if(item.ID == curSelected)
+			if (item.ID == curSelected)
 			{
 				item.x = CoolUtil.coolLerp(item.x, spikyThing.getGraphicMidpoint().x - item.width / 2, lerpVal);
 				item.y = CoolUtil.coolLerp(item.y, spikyThing.getGraphicMidpoint().y - item.height / 2, lerpVal);
@@ -315,20 +321,20 @@ class MainMenuState extends MusicBeatState
 			else
 			{
 				item.y = CoolUtil.coolLerp(item.y, spikyThing.getGraphicMidpoint().y - item.height / 2 + 12, lerpVal);
-				if(item.ID < curSelected)
+				if (item.ID < curSelected)
 				{
 					item.x = CoolUtil.coolLerp(item.x, (-item.width / 2 * (curSelected - item.ID)) + 100 * (item.ID - curSelected + 1), lerpVal);
 					item.color = CoolUtil.smoothColorChange(item.color, FlxColor.WHITE, lerpVal);
 					item.alpha = CoolUtil.coolLerp(item.alpha, 0.7, lerpVal);
 				}
-				if(item.ID > curSelected)
+				if (item.ID > curSelected)
 				{
 					item.x = CoolUtil.coolLerp(item.x, ((1280 - item.width / 2) * (item.ID - curSelected)) - 100 * (curSelected - item.ID + 1), lerpVal);
 					item.color = CoolUtil.smoothColorChange(item.color, FlxColor.WHITE, lerpVal);
 					item.alpha = CoolUtil.coolLerp(item.alpha, 0.7, lerpVal);
 				}
 			}
-			});
+		});
 	}
 
 	var lastCurSelected:Int = 0;

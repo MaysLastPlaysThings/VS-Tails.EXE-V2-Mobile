@@ -35,15 +35,18 @@ class SonicTitleState extends MusicBeatState
 	var code:FlxSprite;
 
 	var sonic2Music:FlxSound;
-	
+
 	override public function create():Void
 	{
 		whiteScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
 		whiteScreen.screenCenter();
 		add(whiteScreen);
-		
+
 		segaIntro = new FlxSprite(0, 0).loadGraphic(Paths.image("title/sega_intro"), true, 320, 73, false);
-		segaIntro.animation.add("sega", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43], 30, false);
+		segaIntro.animation.add("sega", [
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+			39, 40, 41, 42, 43
+		], 30, false);
 		segaIntro.setGraphicSize(Std.int(segaIntro.width * 4));
 		segaIntro.updateHitbox();
 		segaIntro.screenCenter();
@@ -123,7 +126,7 @@ class SonicTitleState extends MusicBeatState
 				});
 			}
 		});
-		
+
 		super.create();
 	}
 
@@ -149,7 +152,8 @@ class SonicTitleState extends MusicBeatState
 					ease: FlxEase.linear,
 					onComplete: function(twn:FlxTween)
 					{
-						FlxTween.tween(presents, {alpha: 0}, 0.5, {ease: FlxEase.linear,
+						FlxTween.tween(presents, {alpha: 0}, 0.5, {
+							ease: FlxEase.linear,
 							startDelay: 3,
 							onComplete: function(twn:FlxTween)
 							{
@@ -167,14 +171,15 @@ class SonicTitleState extends MusicBeatState
 		sonic2Music = new FlxSound().loadEmbedded(Paths.music("sonic2menu"));
 		sonic2Music.play();
 		starsAppear();
-		
+
 		FlxTween.tween(logo0, {alpha: 1}, 0.5, {ease: FlxEase.linear, startDelay: 1.34});
 		FlxTween.tween(logo1, {alpha: 1}, 0.5, {ease: FlxEase.linear, startDelay: 1.34});
 		FlxTween.tween(copyright, {alpha: 1}, 1, {ease: FlxEase.linear, startDelay: 2.31});
 		FlxTween.tween(bgIsle, {alpha: 1}, 0.01, {ease: FlxEase.linear, startDelay: 4.31});
 
 		new FlxTimer().start(2.31, Palle, 0);
-		new FlxTimer().start(4.31, function(tmr:FlxTimer){
+		new FlxTimer().start(4.31, function(tmr:FlxTimer)
+		{
 			FlxG.camera.flash(FlxColor.WHITE, 0.6);
 		});
 	}
@@ -195,6 +200,7 @@ class SonicTitleState extends MusicBeatState
 	}
 
 	private var delirio:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		if (delirio)
@@ -208,7 +214,7 @@ class SonicTitleState extends MusicBeatState
 			sonec.animation.play("exe");
 			code.animation.play("exe");
 		}
-		
+
 		super.update(elapsed);
 	}
 
@@ -233,6 +239,7 @@ class SonicTitleState extends MusicBeatState
 	}
 
 	private static var coglionata:Int = 0;
+
 	private function Palle(tmr:FlxTimer)
 	{
 		switch (coglionata)
