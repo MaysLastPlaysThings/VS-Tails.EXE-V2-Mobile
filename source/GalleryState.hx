@@ -192,8 +192,8 @@ class GalleryState extends MusicBeatState
 
 	public var menuItems:FlxTypedGroup<FlxSprite>;
 
-	var tipTextArray:Array<String> = "E/Q - Camera Zoom
-	\nR - Reset Camera Zoom
+	var tipTextArray:Array<String> = "X/Y - Camera Zoom
+	\nA - Reset Camera Zoom
 	\nArrow Keys - Scroll\n".split('\n');
 
 	var zoomAmmount:Int = 100;
@@ -209,9 +209,7 @@ class GalleryState extends MusicBeatState
 	public override function create()
 	{
 		super.create();
-		#if mobile
-		addVirtualPad(LEFT_RIGHT, B);
-		#end
+
 		menuItems = new FlxTypedGroup<FlxSprite>();
 
 		if (!FlxG.sound.music.playing || FlxG.sound.music.volume == 0)
@@ -276,6 +274,9 @@ class GalleryState extends MusicBeatState
 
 		add(leftArrow);
 		add(rightArrow);
+		#if mobile
+		addVirtualPad(LEFT_RIGHT, A_B_X_Y);
+		#end
 	}
 
 	var daChangingSpeedLerpYeRatioA:Float = 0.2;
@@ -315,18 +316,18 @@ class GalleryState extends MusicBeatState
 			rightArrow.setGraphicSize(Std.int(rightArrow.width * 0.5));
 		}
 
-		if (FlxG.keys.justPressed.R)
+		if (#if desktop FlxG.keys.justPressed.R #else virtualPad.buttonA.justPressed #end)
 		{
 			itemScale = 1;
 		}
 
-		if (FlxG.keys.pressed.E && itemScale < 3)
+		if (#if desktop FlxG.keys.pressed.E #else virtualPad.buttonX.justPressed #end && itemScale < 3)
 		{
 			itemScale += elapsed * itemScale;
 			if (itemScale > 3)
 				itemScale = 3;
 		}
-		if (FlxG.keys.pressed.Q && itemScale > 0.1)
+		if (#if desktop FlxG.keys.pressed.Q #else virtualPad.buttonY.justPressed #end && itemScale > 0.1)
 		{
 			itemScale -= elapsed * itemScale;
 			if (itemScale < 0.1)
