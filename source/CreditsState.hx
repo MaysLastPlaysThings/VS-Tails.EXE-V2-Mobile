@@ -103,7 +103,7 @@ class CreditsState extends MusicBeatState
 			['Unholywanderer04', 'unholy' ,'Combos Lua Script', 'https://gamebanana.com/members/1908754', 'Contributor'],
 			['Loryx', 'loryx', 'Number 1 Tails.EXE fan', 'https://twitter.com/Loryx12', 'Special Thanks'],
 			['five', 'five', 'teehee', 'https://twitter.com/FiveKimz', 'Special Thanks'],
-			['Psych Engine',		'shadowmario',		'Press enter for Psych Engine + Funkin Crew credits',					'PsychCreditsState',	'Engine']
+			['Psych Engine',		'shadowmario',		'Press A for Psych Engine + Funkin Crew credits',					'PsychCreditsState',	'Engine']
 		];
 
 		for(i in pisspoop){
