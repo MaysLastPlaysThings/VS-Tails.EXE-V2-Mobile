@@ -202,10 +202,10 @@ class FreeplayState extends MusicBeatState
 		add(textBG);
 
 		#if PRELOAD_ALL
-		var leText:String = "Press SPACE to listen to the Song / Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
+		var leText:String = "Press Y to listen to the Song / Press C to open the Gameplay Changers Menu / Press X to Reset your Score and Accuracy.";
 		var size:Int = 16;
 		#else
-		var leText:String = "Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
+		var leText:String = "Press C to open the Gameplay Changers Menu / Press X to Reset your Score and Accuracy.";
 		var size:Int = 18;
 		#end
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
@@ -214,7 +214,7 @@ class FreeplayState extends MusicBeatState
 		add(text);
 
 		#if mobile
-		addVirtualPad(UP_DOWN, A_B_C);
+		addVirtualPad(UP_DOWN, A_B_C_X_Y);
 		#end
 
 		super.create();
@@ -278,7 +278,7 @@ class FreeplayState extends MusicBeatState
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
-		var space = FlxG.keys.justPressed.SPACE;
+		var space = FlxG.keys.justPressed.SPACE #if mobile || virtualPad.buttonY.justPressed #end;
 		var ctrl = FlxG.keys.justPressed.CONTROL #if mobile || virtualPad.buttonC.justPressed #end;
 
 		var shiftMult:Int = 1;
@@ -336,15 +336,6 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
 		}
-
-		#if mobile
-		if (FlxG.android.justReleased.BACK)
-		{
-			PlayState.SONG = Song.loadFromJson('octane', 'octane');
-			LoadingState.loadAndSwitchState(new PlayState());
-			PlayState.isStoryMode = false;
-		}
-		#end
 
 		if (ctrl)
 		{
@@ -418,9 +409,12 @@ class FreeplayState extends MusicBeatState
 
 			destroyFreeplayVocals();
 		}
-		else if (controls.RESET)
+		else if (controls.RESET #if mobile || virtualPad.buttonX.justPressed #end)
 		{
 			persistentUpdate = false;
+			#if mobile
+			removeVirtualPad();
+			#end
 			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
 			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
