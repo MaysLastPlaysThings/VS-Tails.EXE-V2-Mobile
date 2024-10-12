@@ -65,10 +65,6 @@ class CreditsState extends MusicBeatState
         add(bg);
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - Role
-		  ['Android Port'],
-			['MaysLastPlay', 'mays', 'I always exist, yep', 'https://www.youtube.com/@MaysLastPlay', 'Porter'],
-			['MarioMaster', 'mario', 'I am MarioMaster', 'https://www.youtube.com/channel/@MarioMaster39', 'Porter'],
-			['MateusX02', 'mateusx02', 'pneumoultramicroscopicosilicovulcanoconiotico', 'https://www.youtube.com/@mateusx02', 'Porter'],
 			['VS Tails.EXE Team'],
 			['teles', 'teles', '1 year, i cant believe it', 'https://www.youtube.com/channel/UCHK83AQBjAc9sy0lE6m8e3A', 'Director, Musician, Coder, Animator'],
 			['Astro_Galaxy', 'astro' ,'Space Journey when?', 'https://www.youtube.com/channel/UChhiMUkcTdDDpOiMPY0td5w', 'Artist, Animator'],
@@ -103,6 +99,9 @@ class CreditsState extends MusicBeatState
 			['Unholywanderer04', 'unholy' ,'Combos Lua Script', 'https://gamebanana.com/members/1908754', 'Contributor'],
 			['Loryx', 'loryx', 'Number 1 Tails.EXE fan', 'https://twitter.com/Loryx12', 'Special Thanks'],
 			['five', 'five', 'teehee', 'https://twitter.com/FiveKimz', 'Special Thanks'],
+			['MaysLastPlay', 'mays', 'I always exist, yep', 'https://www.youtube.com/@MaysLastPlay', 'Porter'],
+			['MarioMaster', 'mario', 'I am MarioMaster', 'https://www.youtube.com/channel/@MarioMaster39', 'Porter'],
+			['MateusX02', 'mateusx02', 'pneumoultramicroscopicosilicovulcanoconiotico', 'https://www.youtube.com/@mateusx02', 'Porter'],
 			['Psych Engine',		'shadowmario',		'Press A for Psych Engine + Funkin Crew credits',					'PsychCreditsState',	'Engine']
 		];
 
