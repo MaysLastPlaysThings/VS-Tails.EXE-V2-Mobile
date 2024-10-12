@@ -90,6 +90,6 @@ jobs:
         with:
           repo_token: ${{secrets.GITHUB_TOKEN}}
           prerelease: false
-          automatic_release_tag: 'v1.0.0'
-          title: 'VS. Tails.EXE Android Port Rework'
+          automatic_release_tag: 'v1.0.0-unlocked'
+          title: 'VS. Tails.EXE Android Port Rework [Unlocked Everything]'
           files: ${{github.workspace}}/VSTails-debug.apk
